@@ -26,6 +26,32 @@ public class VisitController : ControllerBase
         }
         return null;
     }
+
+    [HttpPost]
+    [Route("api/visit/{idzwierza:int}/{date}/{opis}/{cena:double}")]
+    public IActionResult PostVisit(int idzwierza,DateTime date,String opis,double cena)
+    {
+        var db = StaticData.VisitList;
+        var dbAnimal = StaticData.AnimalsList;
+        bool istnieje = false;
+        for (int i = 0; i < dbAnimal.Count; i++)
+        {
+            if (dbAnimal[i].Id==idzwierza)
+            {
+                istnieje = true;
+            }
+            
+        }
+
+        if (istnieje)
+        {
+            Visit visit = new Visit(dbAnimal[idzwierza],date,opis,cena);
+            db.Add(visit);
+            return Ok(visit);
+        }
+
+        return null;
+    }
     
     
 }
